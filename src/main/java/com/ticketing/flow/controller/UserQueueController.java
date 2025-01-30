@@ -2,6 +2,7 @@ package com.ticketing.flow.controller;
 
 import com.ticketing.flow.dto.AllowUserResponse;
 import com.ticketing.flow.dto.AllowedUserResponse;
+import com.ticketing.flow.dto.RankNumberResponse;
 import com.ticketing.flow.dto.RegisterUserResponse;
 import com.ticketing.flow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/vi/queue")
+@RequestMapping("/api/v1/queue")
 @RequiredArgsConstructor
 public class UserQueueController {
     private final UserQueueService userQueueService;
@@ -36,5 +37,12 @@ public class UserQueueController {
                                  @RequestParam(name = "user_id") Long userId){
         return userQueueService.isAllowedUser(queue, userId)
                 .map(AllowedUserResponse::new);
+    }
+
+    @GetMapping("/rank")
+    public Mono<RankNumberResponse> getRank(@RequestParam(name = "queue", defaultValue = "default") String queue,
+                                                   @RequestParam(name = "user_id") Long userId){
+        return userQueueService.getRank(queue, userId)
+                .map(RankNumberResponse::new);
     }
 }
