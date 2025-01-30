@@ -38,8 +38,10 @@ public class UserQueueController {
     // 진입 가능한 상태인지 조회
     @GetMapping("/allowed")
     public Mono<AllowedUserResponse> isAllowedUser(@RequestParam(name = "queue", defaultValue = "default") String queue,
-                                                   @RequestParam(name = "user_id") Long userId) {
-        return userQueueService.isAllowedUser(queue, userId)
+                                                   @RequestParam(name = "user_id") Long userId,
+                                                   @RequestParam(name = "token") String token
+                                                   ) {
+        return userQueueService.isAllowedUserByToken(queue, userId, token)
                 .map(AllowedUserResponse::new);
     }
 

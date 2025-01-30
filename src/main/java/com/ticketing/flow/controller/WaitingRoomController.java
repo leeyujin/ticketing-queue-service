@@ -23,6 +23,7 @@ public class WaitingRoomController {
     ) {
 
         var key = "user-queue-%s-token".formatted(queue);
+
         HttpCookie cookieValue = exchange.getRequest().getCookies().getFirst(key);
         var token = (cookieValue == null)? "" : cookieValue.getValue();
 
