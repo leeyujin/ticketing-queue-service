@@ -19,13 +19,13 @@ public class UserQueueScheduleService {
     @Value("${scheduler.enabled}")
     private Boolean scheduling = false;
 
-    // 서버 시작 후 5초 대기 , 3초 주기로 실행
-    @Scheduled(initialDelay = 5000, fixedDelay = 3000)
+    // 서버 시작 후 5초 대기 , 10초 주기로 실행
+    @Scheduled(initialDelay = 5000, fixedDelay = 10000)
     public void scheduleAllowUser() {
         if(!scheduling){
             return;
         }
-        long maxAllowedUserCount = 3;
+        long maxAllowedUserCount = 1;
         // 사용자 허용
         reactiveRedisTemplate.scan(ScanOptions.scanOptions()
                         .match(USER_QUEUE_WAIT_SCAN_KEY)

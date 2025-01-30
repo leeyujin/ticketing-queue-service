@@ -12,8 +12,6 @@ import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Import(EmbeddedRedis.class)
 @ActiveProfiles("test")
@@ -151,6 +149,27 @@ class UserQueueServiceTest {
     void emptyRank() {
         StepVerifier.create(userQueueService.getRank(DEFAULT_QUEUE, 100L))
                 .expectNext(-1L)
+                .verifyComplete();
+    }
+
+    @Test
+    void isNotAllowedByToken(){
+        StepVerifier.create(userQueueService.isAllowedUserByToken(DEFAULT_QUEUE, 100L, ""))
+                .expectNext(false)
+                .verifyComplete();
+    }
+
+    @Test
+    void isAllowedByToken(){
+        StepVerifier.create(userQueueService.isAllowedUserByToken(DEFAULT_QUEUE, 100L, "d333a5d4eb24f3f5cdd767d79b8c01aad3cd73d3537c70dec430455d37afe4b8"))
+                .expectNext(true)
+                .verifyComplete();
+    }
+
+    @Test
+    void generateToken(){
+        StepVerifier.create(userQueueService.generateToken(DEFAULT_QUEUE, 100L))
+                .expectNext("d333a5d4eb24f3f5cdd767d79b8c01aad3cd73d3537c70dec430455d37afe4b8")
                 .verifyComplete();
     }
 }
