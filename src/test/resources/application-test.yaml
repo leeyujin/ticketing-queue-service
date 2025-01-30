@@ -7,3 +7,6 @@ spring:
   config:
     activate:
       on-profile: test
+
+scheduler:
+  enabled: false
